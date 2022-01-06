@@ -1,0 +1,56 @@
+# how to use pydep in an aws ec2 instance
+
+# -----------------------------------------
+# references 
+# -----------------------------------------
+# https://github.com/thebjorn/pydeps/blob/master/README.rst#notes
+# https://stackoverflow.com/questions/35064304/runtimeerror-make-sure-the-graphviz-executables-are-on-your-systems-path-aft
+
+
+# -----------------------------------------
+# initialisation
+# -----------------------------------------
+pip install pydep
+conda install python-graphviz #nb: use conda to ensure package installed in default path
+
+
+# -----------------------------------------
+# run code in shell / terminal (not from python)
+# -----------------------------------------
+# example 1: pydep fname
+# to run dependencies on a single file
+pydep /home/jovyan/.../fname.py
+
+# to run dependancies on a directory (package)
+# nb: make sure __init__.py file exists in directory location
+pydep /home/jovyan/.../foldername
+
+
+# -----------------------------------------
+# will get an error message similar to below, 
+# but .svg image will be available in the ec2 
+# working directory
+# -----------------------------------------
+Error: no "view" rule for type "image/svg+xml" passed its test case
+       (for more information, add "--debug=1" on the command line)
+/usr/bin/xdg-open: 869: www-browser: not found
+/usr/bin/xdg-open: 869: links2: not found
+/usr/bin/xdg-open: 869: elinks: not found
+/usr/bin/xdg-open: 869: links: not found
+/usr/bin/xdg-open: 869: lynx: not found
+/usr/bin/xdg-open: 869: w3m: not found
+xdg-open: no method available for opening '/home/jovyan/eifmods.svg'
+Traceback (most recent call last):
+  File "/opt/conda/bin/pydeps", line 8, in <module>
+    sys.exit(pydeps())
+  File "/opt/conda/lib/python3.9/site-packages/pydeps/pydeps.py", line 150, in pydeps
+    return _pydeps(inp, **_args)
+  File "/opt/conda/lib/python3.9/site-packages/pydeps/pydeps.py", line 62, in _pydeps
+    dot.display_svg(kw, output)
+  File "/opt/conda/lib/python3.9/site-packages/pydeps/dot.py", line 104, in display_svg
+    subprocess.check_call([display, fname])
+  File "/opt/conda/lib/python3.9/subprocess.py", line 373, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['xdg-open', '/home/jovyan/eifmods.svg']' returned non-zero exit status 3.
+
+
