@@ -1,0 +1,20 @@
+# example of adding customised hovertext on plotly heatmap 
+
+hovertext = list()
+for i, y in enumerate(event_id.index):
+    hovertext.append(list())
+    for j, x in enumerate(event_id.columns):
+        hovertext[-1].append('Time: {}<br />Date: {}<br />feature: {:,.2f}'.format(x, y, extreme_values[i][j]))
+
+fig = go.Figure(
+    go.Heatmap(z = np.where(event_id == True, 1, 0),
+               x = event_id.columns, 
+               y = event_id.index, 
+               hoverinfo = 'text', 
+               text = hovertext,
+    ),     
+)
+fig.update_layout(
+    title = 'Event identification | ' + feature + ' | OOS period 2017-2020'
+)
+fig.write_html('/home/jovyan/qa/outputs/heatmap_eventID.html')
